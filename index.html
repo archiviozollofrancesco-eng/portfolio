@@ -60,7 +60,7 @@
             cursor: grab;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none; /* Crucial for touch dragging */
+            touch-action: none;
         }
 
         .swipe-card:active {
@@ -85,7 +85,6 @@
             pointer-events: none;
         }
 
-        /* Hide scrollbar for writings section */
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
@@ -94,7 +93,6 @@
             scrollbar-width: none;
         }
 
-        /* Instagram ratio card */
         .insta-card {
             aspect-ratio: 4 / 5;
             flex: 0 0 280px;
@@ -117,22 +115,18 @@
 
     <section id="hero" class="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
         <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24">
-            
-            <!-- Left: Picture -->
             <div class="w-full md:w-1/2 flex justify-center md:justify-start">
                 <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-gray-200 to-gray-50 shadow-2xl overflow-hidden group">
-                    <!-- Replace src with your own image -->
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    <img src="images/profile-pic.jpg" 
                          alt="Profile Picture" 
+                         onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
                          class="w-full h-full object-cover rounded-full transition-transform duration-700 group-hover:scale-105">
                 </div>
             </div>
-
-            <!-- Right: Intro (Description) -->
             <div class="w-full md:w-1/2 text-center md:text-left space-y-6">
                 <h1 class="text-5xl md:text-7xl font-semibold tracking-tight text-gray-900">
                     Hello. <br>
-                    <span class="text-gray-400">I'm Fra Zollo!</span>
+                    <span class="text-gray-400">I'm Alex.</span>
                 </h1>
                 <p class="text-lg md:text-2xl text-gray-500 leading-relaxed font-light max-w-lg mx-auto md:mx-0">
                     I design and build digital experiences with a focus on simplicity, usability, and beautiful aesthetics. Welcome to my creative space.
@@ -149,8 +143,6 @@
             </div>
 
             <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-12 md:gap-24">
-                
-                <!-- Left: Tinder Swiper Stack -->
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
                     <div id="card-stack" class="card-stack">
                         <!-- Cards injected via JS -->
@@ -163,7 +155,6 @@
                     </div>
                 </div>
 
-                <!-- Right: Dynamic Project Description -->
                 <div class="w-full md:w-1/2 flex flex-col justify-center min-h-[300px]">
                     <div id="project-info" class="transition-opacity duration-300 opacity-100 space-y-6 text-center md:text-left">
                         <span id="project-tag" class="uppercase tracking-widest text-xs font-bold text-gray-400">App Design</span>
@@ -200,7 +191,6 @@
             </div>
         </div>
 
-        <!-- Horizontal Scroll Container -->
         <div class="max-w-6xl mx-auto relative">
             <div id="writings-container" class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 pt-4 px-4 -mx-4 md:px-0 md:mx-0">
                 <!-- Cards injected via JS -->
@@ -232,10 +222,7 @@
     </footer>
 
     <div id="writing-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
-        <!-- Backdrop -->
         <div class="absolute inset-0 glass-modal" id="modal-backdrop"></div>
-        
-        <!-- Modal Content -->
         <div class="relative bg-white w-full max-w-2xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="modal-panel">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white/90 backdrop-blur z-10">
                 <span id="modal-date" class="text-sm font-medium text-gray-400 uppercase tracking-wide"></span>
@@ -252,7 +239,7 @@
         </div>
     </div>
 
-    <!-- Adding a loading screen overlay -->
+    <!-- Loading screen overlay -->
     <div id="loading-screen" class="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-4"></div>
         <p class="text-gray-500 font-medium tracking-wide">Loading Portfolio...</p>
@@ -260,112 +247,40 @@
 
     <script>
         // ==========================================
-        // 🗄️ GOOGLE SHEETS DATABASE LINKS
-        // Paste the "Publish to Web" CSV links here
-        // ==========================================
-        
-        // Example URLs (Replace these with your actual published CSV URLs)
-        const PROJECTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_T_D-h-O_D-T_K_O-P_L_E_P_L_A_C_E_H_O_L_D_E_R/pub?gid=0&single=true&output=csv';
-        const WRITINGS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_T_D-h-O_D-T_K_O-P_L_E_P_L_A_C_E_H_O_L_D_E_R/pub?gid=123456789&single=true&output=csv';
-
-        // ==========================================
-        // ⚙️ WEBSITE LOGIC (Don't touch below here)
+        // ⚙️ WEBSITE LOGIC
+        // This fetches your text files from GitHub
         // ==========================================
 
         let projects = [];
         let writings = [];
 
-        // Helper function to parse CSV text into an array of objects
-        function parseCSV(csvText) {
-            const lines = csvText.split('\n');
-            if (lines.length < 2) return []; // Need at least headers and one row
-
-            const headers = lines[0].split(',').map(header => header.trim());
-            const result = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                // Handling commas inside quotes (basic implementation)
-                let currentLine = lines[i];
-                if (!currentLine.trim()) continue; // Skip empty lines
-                
-                let obj = {};
-                let row = [];
-                let inQuotes = false;
-                let currentValue = '';
-
-                for (let j = 0; j < currentLine.length; j++) {
-                    const char = currentLine[j];
-                    if (char === '"' && (j === 0 || currentLine[j-1] !== '\\')) {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        row.push(currentValue);
-                        currentValue = '';
-                    } else {
-                        currentValue += char;
-                    }
-                }
-                row.push(currentValue); // Push the last value
-
-                headers.forEach((header, index) => {
-                    let val = row[index] ? row[index].trim() : '';
-                    // Remove enclosing quotes if present
-                    if (val.startsWith('"') && val.endsWith('"')) {
-                        val = val.substring(1, val.length - 1);
-                    }
-                    
-                    // Specific formatting based on header
-                    if (header === 'id') {
-                        obj[header] = parseInt(val, 10);
-                    } else if (header === 'tech') {
-                        obj[header] = val ? val.split(',').map(t => t.trim()) : [];
-                    } else {
-                        obj[header] = val;
-                    }
-                });
-                result.push(obj);
-            }
-            return result;
-        }
-
-        async function fetchSpreadsheetData() {
+        async function fetchGitHubData() {
             try {
-                // Fetch Projects
-                const projResponse = await fetch(PROJECTS_CSV_URL);
-                if (!projResponse.ok) throw new Error("Failed to load projects CSV");
-                const projCsvText = await projResponse.text();
-                projects = parseCSV(projCsvText);
+                // Fetch Projects from the data folder
+                const projResponse = await fetch('data/projects.json');
+                if (!projResponse.ok) throw new Error("Could not find data/projects.json");
+                projects = await projResponse.json();
 
-                // Fetch Writings
-                const writResponse = await fetch(WRITINGS_CSV_URL);
-                if (!writResponse.ok) throw new Error("Failed to load writings CSV");
-                const writCsvText = await writResponse.text();
-                writings = parseCSV(writCsvText);
+                // Fetch Writings from the data folder
+                const writResponse = await fetch('data/writings.json');
+                if (!writResponse.ok) throw new Error("Could not find data/writings.json");
+                writings = await writResponse.json();
 
-                // Fallback data if the spreadsheet is empty or URLs are broken (for demonstration)
-                if (projects.length === 0) {
-                     console.warn("Spreadsheet data not found or empty. Using fallback data.");
-                     loadFallbackData();
-                }
-
-                // Initialize the UI
                 initProjects();
                 initWritings();
-
-                // Hide loading screen
-                const loader = document.getElementById('loading-screen');
-                loader.classList.add('opacity-0');
-                setTimeout(() => loader.remove(), 500);
 
             } catch (error) {
                 console.error("Error fetching data:", error);
-                // Load fallback data if fetch fails
                 loadFallbackData();
                 initProjects();
                 initWritings();
-                
+            } finally {
+                // Hide loading screen whether it succeeded or used fallback
                 const loader = document.getElementById('loading-screen');
-                loader.classList.add('opacity-0');
-                setTimeout(() => loader.remove(), 500);
+                if(loader) {
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.remove(), 500);
+                }
             }
         }
 
@@ -373,32 +288,23 @@
              projects = [
                 {
                     id: 1,
-                    title: "Fintech Dashboard",
-                    tag: "Web App",
-                    description: "A clean, data-heavy dashboard designed for a modern fintech startup. Focused on data visualization and ease of use.",
+                    title: "Welcome to your Portfolio",
+                    tag: "Setup Info",
+                    description: "It looks like you haven't uploaded your data/projects.json file to GitHub yet! Once you upload it, your real projects will appear here.",
                     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    tech: ["React", "Tailwind", "D3.js"]
-                },
-                {
-                    id: 2,
-                    title: "Smart Home App",
-                    tag: "iOS Design",
-                    description: "An intuitive mobile interface for controlling connected home devices. Emphasizes one-tap actions and clean typography.",
-                    image: "https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    tech: ["SwiftUI", "Figma", "CoreAnimation"]
+                    tech: ["GitHub", "JSON"]
                 }
             ];
             writings = [
                 {
-                    title: "The Case for Constraint",
-                    date: "Oct 12, 2025",
-                    preview: "Why having fewer options actually makes for better software and happier users...",
+                    title: "Waiting for Writings",
+                    date: "Today",
+                    preview: "Upload data/writings.json to your GitHub repository to see your reflections appear here.",
                     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    fullText: "<p>True Apple-esque minimalism isn't just about removing visual clutter; it's about removing cognitive clutter.</p>"
+                    fullText: "<p>Follow the deployment guide to complete your setup.</p>"
                 }
             ];
         }
-
 
         let currentCards = [];
         let activeIndex = 0; 
@@ -466,7 +372,6 @@
                 projectTag.textContent = proj.tag;
                 projectTitle.textContent = proj.title;
                 
-                // Decode HTML entities if present in the spreadsheet
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = proj.description;
                 projectDesc.textContent = tempDiv.textContent || tempDiv.innerText || "";
@@ -574,7 +479,7 @@
         const writingsContainer = document.getElementById('writings-container');
         
         function initWritings() {
-            writingsContainer.innerHTML = ''; // clear existing
+            writingsContainer.innerHTML = ''; 
             writings.forEach((write, index) => {
                 const card = document.createElement('div');
                 card.className = 'insta-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden snap-center cursor-pointer group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative flex-shrink-0';
@@ -618,7 +523,6 @@
             mTitle.textContent = data.title;
             mDate.textContent = data.date;
             
-            // If the spreadsheet contains raw HTML for formatting (like <p>, <br>)
             mContent.innerHTML = data.fullText;
             
             modal.classList.remove('hidden');
@@ -648,8 +552,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Kick off the data fetch on load
-            fetchSpreadsheetData();
+            fetchGitHubData();
         });
     </script>
 </body>
