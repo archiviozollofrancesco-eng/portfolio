@@ -247,8 +247,8 @@
 
     <script>
         // ==========================================
-        // ⚙️ WEBSITE LOGIC
-        // This fetches your text files from GitHub
+        // ⚙️ GITHUB FETCH LOGIC
+        // This goes to your data folder and grabs the JSON
         // ==========================================
 
         let projects = [];
@@ -271,11 +271,9 @@
 
             } catch (error) {
                 console.error("Error fetching data:", error);
-                loadFallbackData();
-                initProjects();
-                initWritings();
+                document.getElementById('project-desc').innerHTML = "<span class='text-red-500'>Error loading data. Make sure data/projects.json exists on GitHub!</span>";
             } finally {
-                // Hide loading screen whether it succeeded or used fallback
+                // Hide loading screen
                 const loader = document.getElementById('loading-screen');
                 if(loader) {
                     loader.classList.add('opacity-0');
@@ -284,27 +282,9 @@
             }
         }
 
-        function loadFallbackData() {
-             projects = [
-                {
-                    id: 1,
-                    title: "Welcome to your Portfolio",
-                    tag: "Setup Info",
-                    description: "It looks like you haven't uploaded your data/projects.json file to GitHub yet! Once you upload it, your real projects will appear here.",
-                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                    tech: ["GitHub", "JSON"]
-                }
-            ];
-            writings = [
-                {
-                    title: "Waiting for Writings",
-                    date: "Today",
-                    preview: "Upload data/writings.json to your GitHub repository to see your reflections appear here.",
-                    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    fullText: "<p>Follow the deployment guide to complete your setup.</p>"
-                }
-            ];
-        }
+        // ==========================================
+        // ⚙️ WEBSITE UI LOGIC
+        // ==========================================
 
         let currentCards = [];
         let activeIndex = 0; 
