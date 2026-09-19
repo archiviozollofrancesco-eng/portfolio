@@ -22,5 +22,13 @@
 "description": "A concept for a high-end fashion retailer. The design gets out of the way to let the photography speak for itself.",
 "image": "images/project3.jpg",
 "tech": ["Next.js", "Framer Motion"]
-}
+},
+ {
+"id": 3,
+"title": "Minimalist E-Commerce",
+"tag": "UI/UX",
+"description": "A concept for a high-end fashion retailer. The design gets out of the way to let the photography speak for itself.",
+"image": "images/project3.jpg",
+"tech": ["Next.js", "Framer Motion"]
+} 
 ]
