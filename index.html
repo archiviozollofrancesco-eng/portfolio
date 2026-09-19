@@ -232,73 +232,19 @@
             </div>
             <div class="p-8 sm:p-10 overflow-y-auto custom-scrollbar">
                 <h2 id="modal-title" class="text-3xl sm:text-4xl font-bold tracking-tight mb-6"></h2>
-                <div id="modal-content" class="prose prose-lg text-gray-600 font-light leading-relaxed">
+                <div id="modal-content" class="prose prose-lg text-gray-600 font-light leading-relaxed whitespace-pre-wrap">
                     <!-- Text injected here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Loading screen overlay -->
-    <div id="loading-screen" class="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-4"></div>
-        <p class="text-gray-500 font-medium tracking-wide">Loading Portfolio...</p>
-    </div>
 
+    <!-- 1. WE LOAD THE DATA FILE FIRST -->
+    <script src="data/portfolio-data.js"></script>
+
+    <!-- 2. THEN WE RUN THE WEBSITE LOGIC -->
     <script>
-        // ==========================================
-        // ⚙️ GITHUB FETCH LOGIC
-        // ==========================================
-
-        let projects = [];
-        let writings = [];
-
-        async function fetchGitHubData() {
-            try {
-                // THE CACHE BUSTER: This random number forces the browser to fetch the absolute newest file!
-                const timestamp = new Date().getTime(); 
-
-                // Fetch Projects
-                const projResponse = await fetch(`data/projects.json?t=${timestamp}`);
-                if (!projResponse.ok) throw new Error(`HTTP Error fetching projects! status: ${projResponse.status}`);
-                projects = await projResponse.json();
-
-                // Fetch Writings
-                const writResponse = await fetch(`data/writings.json?t=${timestamp}`);
-                if (!writResponse.ok) throw new Error(`HTTP Error fetching writings! status: ${writResponse.status}`);
-                writings = await writResponse.json();
-
-                initProjects();
-                initWritings();
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                
-                // Show the EXACT error on the screen
-                const errorDiv = document.getElementById('project-desc');
-                if(errorDiv) {
-                    errorDiv.innerHTML = `
-                        <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 text-sm">
-                            <strong>System Error:</strong> ${error.message}
-                            <br><br>
-                            <em>If it says "SyntaxError" or "Unexpected token", there is a hidden character in your JSON file (like a Tab or an "Enter" line break inside quotes).</em>
-                        </div>
-                    `;
-                }
-            } finally {
-                // Hide loading screen
-                const loader = document.getElementById('loading-screen');
-                if(loader) {
-                    loader.classList.add('opacity-0');
-                    setTimeout(() => loader.remove(), 500);
-                }
-            }
-        }
-
-        // ==========================================
-        // ⚙️ WEBSITE UI LOGIC
-        // ==========================================
-
         let currentCards = [];
         let activeIndex = 0; 
         const stackContainer = document.getElementById('card-stack');
@@ -314,11 +260,12 @@
             currentCards = [];
             activeIndex = 0;
             
-            [...projects].reverse().forEach((proj, idx) => {
+            // projectsData is coming from our data/portfolio-data.js file!
+            [...projectsData].reverse().forEach((proj, idx) => {
                 const card = document.createElement('div');
                 card.className = 'swipe-card shadow-xl';
                 card.dataset.id = proj.id;
-                const realIndex = projects.length - 1 - idx;
+                const realIndex = projectsData.length - 1 - idx;
                 
                 card.innerHTML = `
                     <img src="${proj.image}" alt="${proj.title}" onerror="this.src='https://placehold.co/600x800/eeeeee/999999?text=Image+Missing'">
@@ -347,7 +294,7 @@
         }
 
         function updateRightPanel() {
-            if (activeIndex >= projects.length) {
+            if (activeIndex >= projectsData.length) {
                 projectInfoPanel.style.opacity = '0';
                 setTimeout(() => {
                     projectInfoPanel.classList.add('hidden');
@@ -361,13 +308,10 @@
             projectInfoPanel.style.opacity = '0';
             
             setTimeout(() => {
-                const proj = projects[activeIndex];
+                const proj = projectsData[activeIndex];
                 projectTag.textContent = proj.tag;
                 projectTitle.textContent = proj.title;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = proj.description;
-                projectDesc.textContent = tempDiv.textContent || tempDiv.innerText || "";
+                projectDesc.textContent = proj.description;
                 
                 projectTech.innerHTML = '';
                 if(proj.tech && Array.isArray(proj.tech)){
@@ -460,11 +404,11 @@
         }
 
         document.getElementById('btn-reject').addEventListener('click', () => {
-            if(activeIndex < projects.length) swipeCard(currentCards[activeIndex], 'left');
+            if(activeIndex < projectsData.length) swipeCard(currentCards[activeIndex], 'left');
         });
         
         document.getElementById('btn-accept').addEventListener('click', () => {
-             if(activeIndex < projects.length) swipeCard(currentCards[activeIndex], 'right');
+             if(activeIndex < projectsData.length) swipeCard(currentCards[activeIndex], 'right');
         });
 
         document.getElementById('btn-reset').addEventListener('click', initProjects);
@@ -473,7 +417,9 @@
         
         function initWritings() {
             writingsContainer.innerHTML = ''; 
-            writings.forEach((write, index) => {
+            
+            // writingsData is coming from our data/portfolio-data.js file!
+            writingsData.forEach((write, index) => {
                 const card = document.createElement('div');
                 card.className = 'insta-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden snap-center cursor-pointer group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative flex-shrink-0';
                 
@@ -512,11 +458,12 @@
         const mContent = document.getElementById('modal-content');
 
         function openModal(index) {
-            const data = writings[index];
+            const data = writingsData[index];
             mTitle.textContent = data.title;
             mDate.textContent = data.date;
             
-            mContent.innerHTML = data.fullText;
+            // Text Content used to preserve the physical line breaks!
+            mContent.textContent = data.fullText; 
             
             modal.classList.remove('hidden');
             void modal.offsetWidth;
@@ -544,8 +491,13 @@
             if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
         });
 
+        // Start the site when it loads!
         document.addEventListener('DOMContentLoaded', () => {
-            fetchGitHubData();
+            // Give it a tiny delay to make sure the JS file loaded completely
+            setTimeout(() => {
+                initProjects();
+                initWritings();
+            }, 50);
         });
     </script>
 </body>
