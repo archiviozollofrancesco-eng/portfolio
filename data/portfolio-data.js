@@ -5,16 +5,16 @@
 const projectsData = [
     {
         id: 1,
-        title: "Fintech Dashboard",
-        tag: "Web App",
+        title: "European Youth Event",
+        tag: "Communication",
         description: "A clean, data-heavy dashboard designed for a modern fintech startup. Focused on data visualization and ease of use.",
         image: "images/project1.jpg",
         tech: ["React", "Tailwind", "D3.js"]
     },
     {
         id: 2,
-        title: "Smart Home App",
-        tag: "iOS Design",
+        title: "LevelUP! Event",
+        tag: "Communication",
         description: "An intuitive mobile interface for controlling connected home devices. Emphasizes one-tap actions and clean typography.",
         image: "images/project2.jpg",
         tech: ["SwiftUI", "Figma", "CoreAnimation"]
@@ -31,7 +31,7 @@ const projectsData = [
 
 const writingsData = [
     {
-        title: "The Case for Constraint",
+        title: "Un governo di destra inutile",
         date: "Oct 12, 2026",
         preview: "Why having fewer options actually makes for better software and happier users...",
         image: "images/writing1.jpg",
