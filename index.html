@@ -45,15 +45,15 @@
         .card-stack {
             position: relative;
             width: 100%;
-            max-width: 280px; /* Smaller on mobile */
-            height: 400px;    /* Smaller on mobile */
+            max-width: 300px; /* Increased from 280px */
+            height: 440px;    /* Increased from 400px */
             perspective: 1000px;
         }
         
         @media (min-width: 768px) {
             .card-stack {
-                max-width: 320px;
-                height: 480px;
+                max-width: 380px; /* Much larger on desktop */
+                height: 560px;    /* Much taller on desktop */
             }
         }
 
@@ -64,7 +64,8 @@
             width: 100%;
             height: 100%;
             border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 1px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.05); /* Added subtle Apple-style border */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12), 0 1px 8px rgba(0,0,0,0.04); /* Deeper, more premium shadow */
             background-color: #fff;
             overflow: hidden;
             transform-origin: 50% 100%;
@@ -161,7 +162,8 @@
                 <p class="text-lg md:text-xl text-gray-500 mt-2 md:mt-4">Swipe to explore my recent work.</p>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-24">
+            <!-- Reduced the gap slightly from gap-24 to gap-16 to accommodate the wider cards -->
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-16">
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
                     <div id="card-stack" class="card-stack">
                         <!-- Cards injected via JS -->
@@ -278,6 +280,12 @@
             stackContainer.innerHTML = '';
             currentCards = [];
             activeIndex = 0;
+            
+            // 🚀 NEW: Preload images secretly in the background so there is zero delay when swiping!
+            projectsData.forEach(proj => {
+                const img = new Image();
+                img.src = proj.image;
+            });
             
             // projectsData is coming from our data/portfolio-data.js file!
             [...projectsData].reverse().forEach((proj, idx) => {
