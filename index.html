@@ -248,7 +248,6 @@
     <script>
         // ==========================================
         // ⚙️ GITHUB FETCH LOGIC
-        // This goes to your data folder and grabs the JSON
         // ==========================================
 
         let projects = [];
@@ -256,14 +255,17 @@
 
         async function fetchGitHubData() {
             try {
-                // Fetch Projects from the data folder
-                const projResponse = await fetch('data/projects.json');
-                if (!projResponse.ok) throw new Error(`HTTP Error! status: ${projResponse.status}`);
+                // THE CACHE BUSTER: This random number forces the browser to fetch the absolute newest file!
+                const timestamp = new Date().getTime(); 
+
+                // Fetch Projects
+                const projResponse = await fetch(`data/projects.json?t=${timestamp}`);
+                if (!projResponse.ok) throw new Error(`HTTP Error fetching projects! status: ${projResponse.status}`);
                 projects = await projResponse.json();
 
-                // Fetch Writings from the data folder
-                const writResponse = await fetch('data/writings.json');
-                if (!writResponse.ok) throw new Error(`HTTP Error! status: ${writResponse.status}`);
+                // Fetch Writings
+                const writResponse = await fetch(`data/writings.json?t=${timestamp}`);
+                if (!writResponse.ok) throw new Error(`HTTP Error fetching writings! status: ${writResponse.status}`);
                 writings = await writResponse.json();
 
                 initProjects();
@@ -276,10 +278,10 @@
                 const errorDiv = document.getElementById('project-desc');
                 if(errorDiv) {
                     errorDiv.innerHTML = `
-                        <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200">
+                        <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 text-sm">
                             <strong>System Error:</strong> ${error.message}
                             <br><br>
-                            <em>If it says "SyntaxError" or "Unexpected token", there is a typo in your JSON file (like a missing comma or a curly quote).</em>
+                            <em>If it says "SyntaxError" or "Unexpected token", there is a hidden character in your JSON file (like a Tab or an "Enter" line break inside quotes).</em>
                         </div>
                     `;
                 }
