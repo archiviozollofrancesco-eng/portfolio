@@ -258,12 +258,12 @@
             try {
                 // Fetch Projects from the data folder
                 const projResponse = await fetch('data/projects.json');
-                if (!projResponse.ok) throw new Error("Could not find data/projects.json");
+                if (!projResponse.ok) throw new Error(`HTTP Error! status: ${projResponse.status}`);
                 projects = await projResponse.json();
 
                 // Fetch Writings from the data folder
                 const writResponse = await fetch('data/writings.json');
-                if (!writResponse.ok) throw new Error("Could not find data/writings.json");
+                if (!writResponse.ok) throw new Error(`HTTP Error! status: ${writResponse.status}`);
                 writings = await writResponse.json();
 
                 initProjects();
@@ -271,7 +271,18 @@
 
             } catch (error) {
                 console.error("Error fetching data:", error);
-                document.getElementById('project-desc').innerHTML = "<span class='text-red-500'>Error loading data. Make sure data/projects.json exists on GitHub!</span>";
+                
+                // Show the EXACT error on the screen
+                const errorDiv = document.getElementById('project-desc');
+                if(errorDiv) {
+                    errorDiv.innerHTML = `
+                        <div class="bg-red-50 text-red-600 p-4 rounded-xl border border-red-200">
+                            <strong>System Error:</strong> ${error.message}
+                            <br><br>
+                            <em>If it says "SyntaxError" or "Unexpected token", there is a typo in your JSON file (like a missing comma or a curly quote).</em>
+                        </div>
+                    `;
+                }
             } finally {
                 // Hide loading screen
                 const loader = document.getElementById('loading-screen');
