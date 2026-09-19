@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
+    
+    <!-- The Sparks Emoji Favicon ✨ -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
         :root {
             --bg-color: #fbfbfd;
@@ -40,20 +45,31 @@
             background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
             background-size: 24px 24px;
         }
+        
+        /* Shimmer Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .shimmer {
+            animation: shimmer 2.5s infinite linear;
+            background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%);
+            background-size: 1000px 100%;
+        }
 
         /* Tinder Card Styles */
         .card-stack {
             position: relative;
             width: 100%;
-            max-width: 300px; /* Increased from 280px */
-            height: 440px;    /* Increased from 400px */
+            max-width: 300px;
+            height: 440px;
             perspective: 1000px;
         }
         
         @media (min-width: 768px) {
             .card-stack {
-                max-width: 380px; /* Much larger on desktop */
-                height: 560px;    /* Much taller on desktop */
+                max-width: 380px; /* Large, premium size on desktop */
+                height: 560px;
             }
         }
 
@@ -64,8 +80,8 @@
             width: 100%;
             height: 100%;
             border-radius: 24px;
-            border: 1px solid rgba(0,0,0,0.05); /* Added subtle Apple-style border */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12), 0 1px 8px rgba(0,0,0,0.04); /* Deeper, more premium shadow */
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12), 0 1px 8px rgba(0,0,0,0.04);
             background-color: #fff;
             overflow: hidden;
             transform-origin: 50% 100%;
@@ -129,12 +145,13 @@
                 <a href="#projects" class="text-gray-500 hover:text-gray-900 transition-colors">Projects</a>
                 <a href="#writings" class="text-gray-500 hover:text-gray-900 transition-colors">Writings</a>
             </div>
-            <a href="#contact" class="bg-black text-white px-4 py-1.5 rounded-full hover:scale-105 transition-transform">Get in touch</a>
+            <!-- Email link added here! -->
+            <a href="mailto:vai.oltre2015@gmail.com" class="bg-black text-white px-4 py-1.5 rounded-full hover:scale-105 transition-transform">Get in touch</a>
         </div>
     </nav>
 
-    <section id="hero" class="pt-28 pb-16 md:pt-48 md:pb-32 px-6 bg-dots">
-        <div class="max-w-5xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
+    <section id="hero" class="relative pt-28 pb-24 md:pt-32 md:pb-32 px-6 bg-dots min-h-[85vh] flex flex-col justify-center">
+        <div class="max-w-5xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12 w-full">
             <div class="w-full md:w-1/2 flex justify-center md:justify-end md:pr-8">
                 <div class="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-gray-200 to-gray-50 shadow-2xl overflow-hidden group">
                     <img src="images/profile-pic.jpg" 
@@ -153,6 +170,15 @@
                 </p>
             </div>
         </div>
+        
+        <!-- The new bouncing scroll down arrow -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
+            <a href="#projects" class="text-gray-300 hover:text-apple-blue transition-colors block p-2">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </a>
+        </div>
     </section>
 
     <section id="projects" class="py-16 md:py-24 bg-white px-6">
@@ -162,7 +188,6 @@
                 <p class="text-lg md:text-xl text-gray-500 mt-2 md:mt-4">Swipe to explore my recent work.</p>
             </div>
 
-            <!-- Reduced the gap slightly from gap-24 to gap-16 to accommodate the wider cards -->
             <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 md:gap-16">
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
                     <div id="card-stack" class="card-stack">
@@ -224,7 +249,8 @@
             <h2 class="text-4xl md:text-6xl font-semibold tracking-tight">Let's build something.</h2>
             <p class="text-lg md:text-xl text-gray-500 font-light">I'm currently available for freelance work and open to new opportunities.</p>
             <div class="pt-4 md:pt-8">
-                <a href="mailto:hello@example.com" class="inline-block bg-black text-white text-base md:text-lg font-medium px-6 md:px-8 py-3 md:py-4 rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300">
+                <!-- Email link added here too! -->
+                <a href="mailto:vai.oltre2015@gmail.com" class="inline-block bg-black text-white text-base md:text-lg font-medium px-6 md:px-8 py-3 md:py-4 rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300">
                     Get in touch
                 </a>
             </div>
@@ -260,7 +286,6 @@
         </div>
     </div>
 
-
     <!-- 1. WE LOAD THE DATA FILE FIRST -->
     <script src="data/portfolio-data.js"></script>
 
@@ -281,43 +306,51 @@
             currentCards = [];
             activeIndex = 0;
             
-            // 🚀 NEW: Preload images secretly in the background so there is zero delay when swiping!
-            projectsData.forEach(proj => {
-                const img = new Image();
-                img.src = proj.image;
-            });
-            
-            // projectsData is coming from our data/portfolio-data.js file!
-            [...projectsData].reverse().forEach((proj, idx) => {
-                const card = document.createElement('div');
-                card.className = 'swipe-card shadow-xl';
-                card.dataset.id = proj.id;
-                const realIndex = projectsData.length - 1 - idx;
+            // Background Image Preloading!
+            if(typeof projectsData !== 'undefined') {
+                projectsData.forEach(proj => {
+                    const img = new Image();
+                    img.src = proj.image;
+                });
                 
-                card.innerHTML = `
-                    <img src="${proj.image}" alt="${proj.title}" onerror="this.src='https://placehold.co/600x800/eeeeee/999999?text=Image+Missing'">
-                    <div class="card-overlay">
-                        <h4 class="text-2xl font-bold mb-1">${proj.title}</h4>
-                        <p class="text-sm text-gray-200 opacity-90 truncate">${proj.tag}</p>
-                    </div>
-                `;
-                
-                card.style.zIndex = idx; 
-                
-                const depthOffset = realIndex * 8;
-                const scaleOffset = 1 - (realIndex * 0.05);
-                
-                if (realIndex > 0) {
-                     card.style.transform = `translateY(${depthOffset}px) scale(${scaleOffset})`;
-                     card.style.opacity = 1 - (realIndex * 0.2);
-                }
-
-                stackContainer.appendChild(card);
-                currentCards.unshift(card); 
-            });
-
-            updateRightPanel();
-            attachDragEvents();
+                [...projectsData].reverse().forEach((proj, idx) => {
+                    const card = document.createElement('div');
+                    // Add the 'shimmer' class right away so it looks like it's loading
+                    card.className = 'swipe-card shadow-xl shimmer';
+                    card.dataset.id = proj.id;
+                    const realIndex = projectsData.length - 1 - idx;
+                    
+                    // The image starts out completely transparent (opacity-0).
+                    // Once it loads, it makes itself visible and removes the shimmer from the card!
+                    card.innerHTML = `
+                        <img src="${proj.image}" alt="${proj.title}" 
+                             class="w-full h-full object-cover transition-opacity duration-300 opacity-0"
+                             onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer');"
+                             onerror="this.src='https://placehold.co/600x800/eeeeee/999999?text=Image+Missing'; this.classList.remove('opacity-0'); this.parentElement.classList.remove('shimmer');"
+                             ${realIndex === 0 ? 'fetchpriority="high"' : ''}>
+                        <div class="card-overlay transition-opacity duration-300">
+                            <h4 class="text-2xl font-bold mb-1">${proj.title}</h4>
+                            <p class="text-sm text-gray-200 opacity-90 truncate">${proj.tag}</p>
+                        </div>
+                    `;
+                    
+                    card.style.zIndex = idx; 
+                    
+                    const depthOffset = realIndex * 8;
+                    const scaleOffset = 1 - (realIndex * 0.05);
+                    
+                    if (realIndex > 0) {
+                         card.style.transform = `translateY(${depthOffset}px) scale(${scaleOffset})`;
+                         card.style.opacity = 1 - (realIndex * 0.2);
+                    }
+    
+                    stackContainer.appendChild(card);
+                    currentCards.unshift(card); 
+                });
+    
+                updateRightPanel();
+                attachDragEvents();
+            }
         }
 
         function updateRightPanel() {
@@ -443,9 +476,9 @@
         const writingsContainer = document.getElementById('writings-container');
         
         function initWritings() {
+            if(!writingsContainer || typeof writingsData === 'undefined') return;
             writingsContainer.innerHTML = ''; 
             
-            // writingsData is coming from our data/portfolio-data.js file!
             writingsData.forEach((write, index) => {
                 const card = document.createElement('div');
                 card.className = 'insta-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden snap-center cursor-pointer group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative flex-shrink-0';
@@ -488,8 +521,6 @@
             const data = writingsData[index];
             mTitle.textContent = data.title;
             mDate.textContent = data.date;
-            
-            // Text Content used to preserve the physical line breaks!
             mContent.textContent = data.fullText; 
             
             modal.classList.remove('hidden');
@@ -520,7 +551,6 @@
 
         // Start the site when it loads!
         document.addEventListener('DOMContentLoaded', () => {
-            // Give it a tiny delay to make sure the JS file loaded completely
             setTimeout(() => {
                 initProjects();
                 initWritings();
