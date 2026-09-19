@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color: #fbfbfd;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --apple-blue: #0066cc;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .glass-nav {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .glass-modal {
+            background: rgba(251, 251, 253, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+        }
+
+        /* Tinder Card Styles */
+        .card-stack {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 480px;
+            perspective: 1000px;
+        }
+
+        .swipe-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 1px 8px rgba(0,0,0,0.04);
+            background-color: #fff;
+            overflow: hidden;
+            transform-origin: 50% 100%;
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none; /* Crucial for touch dragging */
+        }
+
+        .swipe-card:active {
+            cursor: grabbing;
+        }
+
+        .swipe-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .swipe-card .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            color: white;
+            pointer-events: none;
+        }
+
+        /* Hide scrollbar for writings section */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Instagram ratio card */
+        .insta-card {
+            aspect-ratio: 4 / 5;
+            flex: 0 0 280px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between text-sm font-medium">
+            <a href="#" class="text-gray-900 tracking-tight hover:opacity-70 transition-opacity">Portfolio.</a>
+            <div class="space-x-6 hidden md:block">
+                <a href="#hero" class="text-gray-500 hover:text-gray-900 transition-colors">About</a>
+                <a href="#projects" class="text-gray-500 hover:text-gray-900 transition-colors">Projects</a>
+                <a href="#writings" class="text-gray-500 hover:text-gray-900 transition-colors">Writings</a>
+            </div>
+            <a href="#contact" class="bg-black text-white px-4 py-1.5 rounded-full hover:scale-105 transition-transform">Get in touch</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24">
+            
+            <!-- Left: Picture -->
+            <div class="w-full md:w-1/2 flex justify-center md:justify-start">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-2 bg-gradient-to-tr from-gray-200 to-gray-50 shadow-2xl overflow-hidden group">
+                    <!-- Replace src with your own image -->
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         alt="Profile Picture" 
+                         class="w-full h-full object-cover rounded-full transition-transform duration-700 group-hover:scale-105">
+                </div>
+            </div>
+
+            <!-- Right: Intro (Description) -->
+            <div class="w-full md:w-1/2 text-center md:text-left space-y-6">
+                <h1 class="text-5xl md:text-7xl font-semibold tracking-tight text-gray-900">
+                    Hello. <br>
+                    <span class="text-gray-400">I'm Fra Zollo!</span>
+                </h1>
+                <p class="text-lg md:text-2xl text-gray-500 leading-relaxed font-light max-w-lg mx-auto md:mx-0">
+                    I design and build digital experiences with a focus on simplicity, usability, and beautiful aesthetics. Welcome to my creative space.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 bg-white px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center md:text-left mb-16">
+                <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Selected Projects.</h2>
+                <p class="text-xl text-gray-500 mt-4">Swipe to explore my recent work.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-12 md:gap-24">
+                
+                <!-- Left: Tinder Swiper Stack -->
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
+                    <div id="card-stack" class="card-stack">
+                        <!-- Cards injected via JS -->
+                    </div>
+                    
+                    <div class="mt-8 flex items-center space-x-6">
+                        <button id="btn-reject" class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100 text-red-500 hover:scale-110 hover:bg-red-50 transition-all text-2xl font-bold">&times;</button>
+                        <button id="btn-reset" class="text-sm text-gray-400 hover:text-gray-800 underline transition-colors">Reset Stack</button>
+                        <button id="btn-accept" class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100 text-green-500 hover:scale-110 hover:bg-green-50 transition-all text-xl font-bold">&hearts;</button>
+                    </div>
+                </div>
+
+                <!-- Right: Dynamic Project Description -->
+                <div class="w-full md:w-1/2 flex flex-col justify-center min-h-[300px]">
+                    <div id="project-info" class="transition-opacity duration-300 opacity-100 space-y-6 text-center md:text-left">
+                        <span id="project-tag" class="uppercase tracking-widest text-xs font-bold text-gray-400">App Design</span>
+                        <h3 id="project-title" class="text-4xl font-semibold tracking-tight">Project Title</h3>
+                        <p id="project-desc" class="text-lg text-gray-500 leading-relaxed font-light">
+                            Loading description...
+                        </p>
+                        <div id="project-tech" class="flex flex-wrap gap-2 justify-center md:justify-start pt-4">
+                            <!-- Tech pills injected here -->
+                        </div>
+                    </div>
+                    <div id="project-empty" class="hidden text-center md:text-left space-y-4">
+                        <h3 class="text-3xl font-semibold text-gray-300">You've seen them all.</h3>
+                        <p class="text-gray-400">Tap reset to view the projects again.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="writings" class="py-24 bg-[#fbfbfd] px-6 overflow-hidden">
+        <div class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">Reflections.</h2>
+                <p class="text-xl text-gray-500 mt-4">Thoughts on politics, society, and design.</p>
+            </div>
+            <div class="hidden md:flex space-x-2">
+                <button id="scroll-left" class="p-3 rounded-full bg-white shadow hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button id="scroll-right" class="p-3 rounded-full bg-white shadow hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Horizontal Scroll Container -->
+        <div class="max-w-6xl mx-auto relative">
+            <div id="writings-container" class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 pt-4 px-4 -mx-4 md:px-0 md:mx-0">
+                <!-- Cards injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-white px-6">
+        <div class="max-w-3xl mx-auto text-center space-y-8">
+            <h2 class="text-5xl md:text-6xl font-semibold tracking-tight">Let's build something.</h2>
+            <p class="text-xl text-gray-500 font-light">I'm currently available for freelance work and open to new opportunities.</p>
+            <div class="pt-8">
+                <a href="mailto:hello@example.com" class="inline-block bg-black text-white text-lg font-medium px-8 py-4 rounded-full hover:scale-105 hover:shadow-xl transition-all duration-300">
+                    Get in touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-gray-100 bg-[#fbfbfd] py-10 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-4">
+            <p>&copy; 2026 Alex. All rights reserved.</p>
+            <div class="flex space-x-6 items-center">
+                <a href="#" class="hover:text-gray-900 transition-colors">Twitter</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-gray-900 transition-colors">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="writing-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 glass-modal" id="modal-backdrop"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-white w-full max-w-2xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="modal-panel">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white/90 backdrop-blur z-10">
+                <span id="modal-date" class="text-sm font-medium text-gray-400 uppercase tracking-wide"></span>
+                <button id="close-modal" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-8 sm:p-10 overflow-y-auto custom-scrollbar">
+                <h2 id="modal-title" class="text-3xl sm:text-4xl font-bold tracking-tight mb-6"></h2>
+                <div id="modal-content" class="prose prose-lg text-gray-600 font-light leading-relaxed">
+                    <!-- Text injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adding a loading screen overlay -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin mb-4"></div>
+        <p class="text-gray-500 font-medium tracking-wide">Loading Portfolio...</p>
+    </div>
+
+    <script>
+        // ==========================================
+        // 🗄️ GOOGLE SHEETS DATABASE LINKS
+        // Paste the "Publish to Web" CSV links here
+        // ==========================================
+        
+        // Example URLs (Replace these with your actual published CSV URLs)
+        const PROJECTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_T_D-h-O_D-T_K_O-P_L_E_P_L_A_C_E_H_O_L_D_E_R/pub?gid=0&single=true&output=csv';
+        const WRITINGS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_T_D-h-O_D-T_K_O-P_L_E_P_L_A_C_E_H_O_L_D_E_R/pub?gid=123456789&single=true&output=csv';
+
+        // ==========================================
+        // ⚙️ WEBSITE LOGIC (Don't touch below here)
+        // ==========================================
+
+        let projects = [];
+        let writings = [];
+
+        // Helper function to parse CSV text into an array of objects
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            if (lines.length < 2) return []; // Need at least headers and one row
+
+            const headers = lines[0].split(',').map(header => header.trim());
+            const result = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                // Handling commas inside quotes (basic implementation)
+                let currentLine = lines[i];
+                if (!currentLine.trim()) continue; // Skip empty lines
+                
+                let obj = {};
+                let row = [];
+                let inQuotes = false;
+                let currentValue = '';
+
+                for (let j = 0; j < currentLine.length; j++) {
+                    const char = currentLine[j];
+                    if (char === '"' && (j === 0 || currentLine[j-1] !== '\\')) {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        row.push(currentValue);
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                row.push(currentValue); // Push the last value
+
+                headers.forEach((header, index) => {
+                    let val = row[index] ? row[index].trim() : '';
+                    // Remove enclosing quotes if present
+                    if (val.startsWith('"') && val.endsWith('"')) {
+                        val = val.substring(1, val.length - 1);
+                    }
+                    
+                    // Specific formatting based on header
+                    if (header === 'id') {
+                        obj[header] = parseInt(val, 10);
+                    } else if (header === 'tech') {
+                        obj[header] = val ? val.split(',').map(t => t.trim()) : [];
+                    } else {
+                        obj[header] = val;
+                    }
+                });
+                result.push(obj);
+            }
+            return result;
+        }
+
+        async function fetchSpreadsheetData() {
+            try {
+                // Fetch Projects
+                const projResponse = await fetch(PROJECTS_CSV_URL);
+                if (!projResponse.ok) throw new Error("Failed to load projects CSV");
+                const projCsvText = await projResponse.text();
+                projects = parseCSV(projCsvText);
+
+                // Fetch Writings
+                const writResponse = await fetch(WRITINGS_CSV_URL);
+                if (!writResponse.ok) throw new Error("Failed to load writings CSV");
+                const writCsvText = await writResponse.text();
+                writings = parseCSV(writCsvText);
+
+                // Fallback data if the spreadsheet is empty or URLs are broken (for demonstration)
+                if (projects.length === 0) {
+                     console.warn("Spreadsheet data not found or empty. Using fallback data.");
+                     loadFallbackData();
+                }
+
+                // Initialize the UI
+                initProjects();
+                initWritings();
+
+                // Hide loading screen
+                const loader = document.getElementById('loading-screen');
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.remove(), 500);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                // Load fallback data if fetch fails
+                loadFallbackData();
+                initProjects();
+                initWritings();
+                
+                const loader = document.getElementById('loading-screen');
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.remove(), 500);
+            }
+        }
+
+        function loadFallbackData() {
+             projects = [
+                {
+                    id: 1,
+                    title: "Fintech Dashboard",
+                    tag: "Web App",
+                    description: "A clean, data-heavy dashboard designed for a modern fintech startup. Focused on data visualization and ease of use.",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    tech: ["React", "Tailwind", "D3.js"]
+                },
+                {
+                    id: 2,
+                    title: "Smart Home App",
+                    tag: "iOS Design",
+                    description: "An intuitive mobile interface for controlling connected home devices. Emphasizes one-tap actions and clean typography.",
+                    image: "https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    tech: ["SwiftUI", "Figma", "CoreAnimation"]
+                }
+            ];
+            writings = [
+                {
+                    title: "The Case for Constraint",
+                    date: "Oct 12, 2025",
+                    preview: "Why having fewer options actually makes for better software and happier users...",
+                    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    fullText: "<p>True Apple-esque minimalism isn't just about removing visual clutter; it's about removing cognitive clutter.</p>"
+                }
+            ];
+        }
+
+
+        let currentCards = [];
+        let activeIndex = 0; 
+        const stackContainer = document.getElementById('card-stack');
+        const projectInfoPanel = document.getElementById('project-info');
+        const projectEmptyPanel = document.getElementById('project-empty');
+        const projectTag = document.getElementById('project-tag');
+        const projectTitle = document.getElementById('project-title');
+        const projectDesc = document.getElementById('project-desc');
+        const projectTech = document.getElementById('project-tech');
+
+        function initProjects() {
+            stackContainer.innerHTML = '';
+            currentCards = [];
+            activeIndex = 0;
+            
+            [...projects].reverse().forEach((proj, idx) => {
+                const card = document.createElement('div');
+                card.className = 'swipe-card shadow-xl';
+                card.dataset.id = proj.id;
+                const realIndex = projects.length - 1 - idx;
+                
+                card.innerHTML = `
+                    <img src="${proj.image}" alt="${proj.title}" onerror="this.src='https://placehold.co/600x800/eeeeee/999999?text=Image+Missing'">
+                    <div class="card-overlay">
+                        <h4 class="text-2xl font-bold mb-1">${proj.title}</h4>
+                        <p class="text-sm text-gray-200 opacity-90 truncate">${proj.tag}</p>
+                    </div>
+                `;
+                
+                card.style.zIndex = idx; 
+                
+                const depthOffset = realIndex * 8;
+                const scaleOffset = 1 - (realIndex * 0.05);
+                
+                if (realIndex > 0) {
+                     card.style.transform = `translateY(${depthOffset}px) scale(${scaleOffset})`;
+                     card.style.opacity = 1 - (realIndex * 0.2);
+                }
+
+                stackContainer.appendChild(card);
+                currentCards.unshift(card); 
+            });
+
+            updateRightPanel();
+            attachDragEvents();
+        }
+
+        function updateRightPanel() {
+            if (activeIndex >= projects.length) {
+                projectInfoPanel.style.opacity = '0';
+                setTimeout(() => {
+                    projectInfoPanel.classList.add('hidden');
+                    projectEmptyPanel.classList.remove('hidden');
+                }, 300);
+                return;
+            }
+
+            projectInfoPanel.classList.remove('hidden');
+            projectEmptyPanel.classList.add('hidden');
+            projectInfoPanel.style.opacity = '0';
+            
+            setTimeout(() => {
+                const proj = projects[activeIndex];
+                projectTag.textContent = proj.tag;
+                projectTitle.textContent = proj.title;
+                
+                // Decode HTML entities if present in the spreadsheet
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = proj.description;
+                projectDesc.textContent = tempDiv.textContent || tempDiv.innerText || "";
+                
+                projectTech.innerHTML = '';
+                if(proj.tech && Array.isArray(proj.tech)){
+                    proj.tech.forEach(t => {
+                        projectTech.innerHTML += `<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">${t}</span>`;
+                    });
+                }
+                
+                projectInfoPanel.style.opacity = '1';
+                updateStackVisuals();
+            }, 300);
+        }
+
+        function updateStackVisuals() {
+            currentCards.forEach((card, index) => {
+                if(index < activeIndex) return; 
+                
+                const relativeIndex = index - activeIndex;
+                card.style.transition = 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease';
+                
+                if (relativeIndex === 0) {
+                    card.style.transform = `translateY(0px) scale(1)`;
+                    card.style.opacity = 1;
+                } else {
+                    const depthOffset = relativeIndex * 8;
+                    const scaleOffset = 1 - (relativeIndex * 0.05);
+                    card.style.transform = `translateY(${depthOffset}px) scale(${scaleOffset})`;
+                    card.style.opacity = 1 - (relativeIndex * 0.2);
+                }
+            });
+        }
+
+        function attachDragEvents() {
+            currentCards.forEach((card, index) => {
+                let isDragging = false;
+                let startX = 0, startY = 0;
+                let currentX = 0, currentY = 0;
+
+                card.addEventListener('pointerdown', (e) => {
+                    if (index !== activeIndex) return; 
+                    
+                    isDragging = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    card.style.transition = 'none'; 
+                    card.setPointerCapture(e.pointerId);
+                });
+
+                card.addEventListener('pointermove', (e) => {
+                    if (!isDragging) return;
+                    
+                    currentX = e.clientX - startX;
+                    currentY = e.clientY - startY;
+                    
+                    const rotate = currentX * 0.05;
+                    card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+                });
+
+                const handleRelease = (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    card.releasePointerCapture(e.pointerId);
+
+                    const threshold = window.innerWidth > 768 ? 150 : 100;
+                    
+                    if (Math.abs(currentX) > threshold) {
+                        swipeCard(card, currentX > 0 ? 'right' : 'left', currentX, currentY);
+                    } else {
+                        card.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                        card.style.transform = `translate(0px, 0px) rotate(0deg)`;
+                    }
+                };
+
+                card.addEventListener('pointerup', handleRelease);
+                card.addEventListener('pointercancel', handleRelease);
+            });
+        }
+
+        function swipeCard(card, direction, currentX = 0, currentY = 0) {
+            const endX = direction === 'right' ? window.innerWidth : -window.innerWidth;
+            const endY = currentY + (Math.random() * 200 - 100);
+            const rotate = direction === 'right' ? 30 : -30;
+            
+            card.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease';
+            card.style.transform = `translate(${endX}px, ${endY}px) rotate(${rotate}deg)`;
+            card.style.opacity = '0';
+            
+            activeIndex++;
+            updateRightPanel();
+        }
+
+        document.getElementById('btn-reject').addEventListener('click', () => {
+            if(activeIndex < projects.length) swipeCard(currentCards[activeIndex], 'left');
+        });
+        
+        document.getElementById('btn-accept').addEventListener('click', () => {
+             if(activeIndex < projects.length) swipeCard(currentCards[activeIndex], 'right');
+        });
+
+        document.getElementById('btn-reset').addEventListener('click', initProjects);
+
+        const writingsContainer = document.getElementById('writings-container');
+        
+        function initWritings() {
+            writingsContainer.innerHTML = ''; // clear existing
+            writings.forEach((write, index) => {
+                const card = document.createElement('div');
+                card.className = 'insta-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden snap-center cursor-pointer group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative flex-shrink-0';
+                
+                card.innerHTML = `
+                    <div class="h-1/2 w-full overflow-hidden">
+                        <img src="${write.image}" alt="cover" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/400x500/eeeeee/999999?text=Image+Missing'">
+                    </div>
+                    <div class="p-6 h-1/2 flex flex-col">
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">${write.date}</span>
+                        <h4 class="text-xl font-bold text-gray-900 mb-3 leading-tight tracking-tight">${write.title}</h4>
+                        <p class="text-sm text-gray-500 line-clamp-3 leading-relaxed">${write.preview}</p>
+                        <div class="mt-auto pt-4 flex items-center text-apple-blue text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                            Read full reflection <span class="ml-1">&rarr;</span>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => openModal(index));
+                writingsContainer.appendChild(card);
+            });
+        }
+
+        document.getElementById('scroll-left').addEventListener('click', () => {
+            writingsContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+        document.getElementById('scroll-right').addEventListener('click', () => {
+            writingsContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+
+        const modal = document.getElementById('writing-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalPanel = document.getElementById('modal-panel');
+        const closeModalBtn = document.getElementById('close-modal');
+        const mTitle = document.getElementById('modal-title');
+        const mDate = document.getElementById('modal-date');
+        const mContent = document.getElementById('modal-content');
+
+        function openModal(index) {
+            const data = writings[index];
+            mTitle.textContent = data.title;
+            mDate.textContent = data.date;
+            
+            // If the spreadsheet contains raw HTML for formatting (like <p>, <br>)
+            mContent.innerHTML = data.fullText;
+            
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modalPanel.classList.remove('scale-95');
+            modalPanel.classList.add('scale-100');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalPanel.classList.remove('scale-100');
+            modalPanel.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300); 
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', closeModal);
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kick off the data fetch on load
+            fetchSpreadsheetData();
+        });
+    </script>
+</body>
+</html>
